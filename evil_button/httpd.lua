@@ -10,7 +10,11 @@ local peer_pubkey
 function pubkey_handler(method,location,posted)
 	local body = ""
 	if method == "GET" then
-		body = '{"publicKey":"-----BEGIN PUBLIC KEY-----\n<FILLME>==\n-----END PUBLIC KEY-----\n","scheme":0}'
+		if peer_pubkey ~= nil then
+			body = '{"publicKey":"'..peer_pubkey..'","scheme":0}'
+		else
+			body = '{"publicKey":"-----BEGIN PUBLIC KEY-----\n<FILLME>==\n-----END PUBLIC KEY-----\n","scheme":0}'
+		end
 	else
 		peer_pubkey = posted:sub(15,-14):gsub("\\n","\n")
 		print(peer_pubkey)
